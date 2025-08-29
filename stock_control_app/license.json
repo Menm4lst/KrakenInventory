@@ -1,0 +1,7 @@
+{
+    "company": "Mi Empresa",
+    "license_key": "ABCD-1234-EFGH-5678",
+    "expiry_date": "2025-12-31",
+    "max_users": 1,
+    "features": ["products", "movements", "reports"]
+}

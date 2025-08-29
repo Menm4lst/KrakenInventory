@@ -1,0 +1,8 @@
+{
+    "company_name": "Mi Empresa",
+    "default_category": "General",
+    "low_stock_alert": true,
+    "backup_path": "./backups",
+    "auto_backup": true,
+    "backup_interval_days": 7
+}

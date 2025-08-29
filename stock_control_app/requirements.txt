@@ -1,0 +1,8 @@
+# Aplicación
+tkinter  # Incluido en Python estándar
+
+# Para empaquetado
+pyinstaller==5.13.0
+
+# Para pruebas (opcional)
+pytest==7.4.0
