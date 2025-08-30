@@ -218,9 +218,18 @@ class ProductUI:
         if not selected:
             messagebox.showwarning("Advertencia", "Seleccione un producto para eliminar")
             return
-        
+        product_id = int(selected[0])
+        # Verificar movimientos recientes
+        from services.movement_service import MovementService
+        from datetime import datetime, timedelta
+        movimientos = MovementService.get_movements_by_product(product_id)
+        movimientos = [dict(m) if not isinstance(m, dict) else m for m in movimientos]
+        hoy = datetime.now()
+        recientes = [m for m in movimientos if m.get("created_at") and (hoy - datetime.strptime(m["created_at"][:10], "%Y-%m-%d")).days <= 30]
+        if recientes:
+            if not messagebox.askyesno("Advertencia", f"Este producto tiene {len(recientes)} movimientos en los últimos 30 días. ¿Seguro que desea eliminarlo?"):
+                return
         if messagebox.askyesno("Confirmar", "¿Está seguro de que desea eliminar este producto?"):
-            product_id = int(selected[0])
             success, message = ProductService.delete_product(product_id)
             if success:
                 messagebox.showinfo("Éxito", message)

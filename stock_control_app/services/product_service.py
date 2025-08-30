@@ -32,8 +32,12 @@ class ProductService:
 
     @staticmethod
     def delete_product(product_id):
-        ProductRepository.delete(product_id)
-        return True, "Producto eliminado correctamente"
+        # Intentar eliminar aunque no se encuentre
+        try:
+            ProductRepository.delete(product_id)
+            return True, "Producto eliminado correctamente"
+        except Exception:
+            return False, "No se pudo eliminar el producto (puede que ya no exista)"
 
     @staticmethod
     def search_products(search_term):

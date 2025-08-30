@@ -136,6 +136,18 @@ class MovementRepository:
         return movements
 
     @staticmethod
+    def get_by_id(movement_id):
+        conn = sqlite3.connect("stock_control.db")
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM movements WHERE id = ?", (movement_id,)
+        )
+        movement = cursor.fetchone()
+        conn.close()
+        return movement
+
+    @staticmethod
     def create(movement_data):
         conn = sqlite3.connect("stock_control.db")
         cursor = conn.cursor()
@@ -155,6 +167,32 @@ class MovementRepository:
         conn.commit()
         conn.close()
         return movement_id
+
+    @staticmethod
+    def update(movement_id, movement_data):
+        conn = sqlite3.connect("stock_control.db")
+        cursor = conn.cursor()
+        cursor.execute(
+            """UPDATE movements SET product_id = ?, type = ?, quantity = ?, reason = ?, notes = ? WHERE id = ?""",
+            (
+                movement_data["product_id"],
+                movement_data["type"],
+                movement_data["quantity"],
+                movement_data["reason"],
+                movement_data["notes"],
+                movement_id,
+            ),
+        )
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def delete(movement_id):
+        conn = sqlite3.connect("stock_control.db")
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM movements WHERE id = ?", (movement_id,))
+        conn.commit()
+        conn.close()
 
     @staticmethod
     def get_by_product_id(product_id):
